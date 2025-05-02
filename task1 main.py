@@ -20,9 +20,9 @@ emails = data['text']
 labels = data['label']
 
 spam = {}
-spamcounter = 1
+spamcounter = 0
 notspam = {}
-notspamcounter = 1
+notspamcounter = 0
 
 TRAIN_AMOUNT = 2700
 
@@ -90,4 +90,4 @@ for index in range(len(emails[TRAIN_AMOUNT:])):
     else:
         incorrect += 1
 
-input(f"Accuracy: {correct *100 /(correct +incorrect)}%")
+input(f"Accuracy: {round(correct *100 /(correct +incorrect), 2)}%")
