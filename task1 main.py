@@ -83,15 +83,11 @@ correct, incorrect = 0, 0
 
 # Testing set
 for index in range(len(emails[TRAIN_AMOUNT:])):
-    
+
+    # Classifier
     if labels[index] == is_spam(emails[index]):
         correct += 1
     else:
         incorrect += 1
 
 input(f"Accuracy: {correct *100 /(correct +incorrect)}%")
-
-
-
-
-        
