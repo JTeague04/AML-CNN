@@ -14,6 +14,8 @@
 #   (so if it consists of 1% of spam an 99% of not spam, then its not spam.)
 
 import pandas as pd
+import numpy as np
+
 data = pd.read_csv('spam_detection_training_data.csv')
 
 emails = data['text']
@@ -59,7 +61,7 @@ for index in range(len(emails[:TRAIN_AMOUNT])):
     # Learn from it
     learn_from(emails[index], labels[index])
             
-# TESTING ===========================================================
+# VALIDATION =========================================================
 
 def is_spam(email):
     spam_count = 0
@@ -81,7 +83,7 @@ def is_spam(email):
 
 correct, incorrect = 0, 0
 
-# Testing set
+# Validation (to show guaranteed accuracy)
 for index in range(len(emails[TRAIN_AMOUNT:])):
 
     # Classifier
@@ -90,4 +92,23 @@ for index in range(len(emails[TRAIN_AMOUNT:])):
     else:
         incorrect += 1
 
-input(f"Accuracy: {round(correct *100 /(correct +incorrect), 2)}%")
+print(f"Validation accuracy: {round(correct *100 /(correct +incorrect), 2)}%")
+input("Press ENTER to predict and save test data results.")
+
+# Testing data, saving results ======================================
+
+test_data = pd.read_csv('spam_detection_test_data.csv')
+test_emails = test_data['text']
+
+results = np.array([None for _ in range(len(test_emails))])
+
+# Actually doing the test predictions
+for index, e in enumerate(test_emails):
+    results[index] = is_spam(e)
+
+# Taken from provided colab worksheet
+def save_as_csv(pred_labels, location = '.'):
+    assert pred_labels.shape[0]==1552, 'wrong number of labels, should be 1552 test labels'
+    np.savetxt(location + '/results_task1.csv', pred_labels, delimiter=',')
+
+save_as_csv(results)
